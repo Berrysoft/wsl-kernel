@@ -1,0 +1,28 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      tag_name:
+        required: true
+        type: string
+        default: ""
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Download WSL2 Stable Kernel
+        run: |
+          git clone --depth 1 --branch ${{ inputs.tag_name }} https://github.com/Nevuly/WSL2-Linux-Kernel-Rolling.git
+      - name: Build WSL2 Stable Kernel
+        run: |
+          cd WSL2-Linux-Kernel-Rolling
+          make -j$(nproc) KCONFIG_CONFIG=../.config
+      - name: Upload Kernel Images
+        uses: actions/upload-artifact@v7
+        with:
+          name: bzImage-${{ inputs.tag_name }}
+          path: WSL2-Linux-Kernel-Rolling/arch/x86/boot/bzImage
