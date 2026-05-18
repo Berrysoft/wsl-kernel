@@ -17,6 +17,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flex bison bc libelf-dev
       - name: Download WSL2 Stable Kernel
         run: |
           git clone --depth 1 --branch ${{ matrix.tag }} https://github.com/Nevuly/WSL2-Linux-Kernel-Rolling.git
