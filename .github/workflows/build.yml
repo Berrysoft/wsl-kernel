@@ -11,9 +11,9 @@ jobs:
     strategy:
       matrix:
         tag:
-          - linux-wsl-stable-7.0.12
+          - linux-wsl-stable-7.1.0
         version:
-          - 7.0.12
+          - 7.1.0
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -28,8 +28,9 @@ jobs:
         run: |
           cd WSL2-Linux-Kernel-Rolling
           make -j$(nproc) KCONFIG_CONFIG=../.config
+          cp arch/x86/boot/bzImage bzImage-${{ matrix.version }}
       - name: Upload Kernel Images
         uses: actions/upload-artifact@v7
         with:
           name: bzImage.${{ matrix.version }}
-          path: WSL2-Linux-Kernel-Rolling/arch/x86/boot/bzImage
+          path: WSL2-Linux-Kernel-Rolling/bzImage-${{ matrix.version }}
