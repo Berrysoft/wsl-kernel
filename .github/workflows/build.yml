@@ -11,9 +11,9 @@ jobs:
     strategy:
       matrix:
         tag:
-          - linux-wsl-stable-7.1.4
+          - linux-wsl-stable-7.1.5
         version:
-          - 7.1.4
+          - 7.1.5
     steps:
       - name: Checkout
         uses: actions/checkout@v6
